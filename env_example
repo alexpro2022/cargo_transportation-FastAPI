@@ -1,0 +1,5 @@
+SECRET_KEY=MY_SECRET_KEY
+APP_TITLE=API-cервис поиска ближайших машин для перевозки грузов.
+APP_DESCRIPTION=Тестовое задание web-программист Python Middle
+POSTGRES_PASSWORD=postgres
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
