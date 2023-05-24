@@ -8,16 +8,17 @@ from app.models.car import Car
 
 
 async def load(data: list):
-    # [print(locations[i]) for i in range(10)]
+    data_name = f'={data[0].__class__.__name__.lower()}s=' if data else '=None='
     session = AsyncSessionLocal()
     session.add_all(data)
     try:
-        print('Loading data ...')
-        await session.commit() 
+        print(f'Loading data {data_name} ...')
+        await session.commit()
     except IntegrityError:
-        print('Data has already been loaded ... exiting')
+        print(f'Data {data_name} has already been loaded ... exiting')
         await session.rollback()
-    print('Data has successfully been loaded')    
+    else:
+        print(f'Data {data_name} has successfully been loaded')
 
 
 async def load_locations():
@@ -33,4 +34,3 @@ async def load_locations():
 async def load_cars():
     cars = []
     await load(cars)
-
