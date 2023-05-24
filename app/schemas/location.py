@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class LocationResponse(BaseModel):
+class Location(BaseModel):
     id: int
     zip: str = Field(max_length=100)
     state: str = Field(max_length=256)
