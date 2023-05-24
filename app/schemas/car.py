@@ -1,5 +1,5 @@
 from app.schemas.mixins import SchemasMixin
 
 
-class Car(SchemasMixin):
+class CarResponse(SchemasMixin):
     pass
