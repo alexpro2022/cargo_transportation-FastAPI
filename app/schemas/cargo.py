@@ -1,8 +1,9 @@
-from pydantic import BaseModel
-
-from app.schemas.mixins import DBMixin
+from app.schemas.mixins import DBMixin, DescriptionMixin, WeightMixin
 
 
-class CargoResponse(DBMixin, BaseModel):
-    description = str
-    delivery_location = int
+class CargoResponse(DBMixin, DescriptionMixin):
+    delivery_location: int
+
+
+class CargoUpdate(DescriptionMixin, WeightMixin):
+    pass

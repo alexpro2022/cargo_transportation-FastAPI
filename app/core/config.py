@@ -7,10 +7,12 @@ class Settings(BaseSettings):
     secret_key: str = 'secret_key'
     database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
     # postgres_password: str
+    number_of_locations: int = 0
+    ZIP_CODE_LENGTH = 5
     MIN_WEIGHT = 1
     MAX_WEIGHT = 1000
-    CAR_ID_RANGE = (1000, 9999)
-    number_of_locations: int = 0
+    CAR_NUMBER_LENGTH = 5
+    CAR_NUMBER_RANGE = (1000, 9999)
 
     class Config:
         env_file = '.env'

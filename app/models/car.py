@@ -1,16 +1,18 @@
-from app.core.db import Base
+from sqlalchemy import Column, String
+
+from app.core import config, db
 from app.models.mixins import CommonFieldsMixin
 
 
-class Car(CommonFieldsMixin, Base):
-    # pass
-    # item_id = Column(String(5), unique=True, nullable=False)
-    # current_location = Column(Integer, ForeignKey('location.id'))
-    # weight = Column(Integer, nullable=False)
+class Car(CommonFieldsMixin, db.Base):
+    number = Column(
+        String(config.settings.CAR_NUMBER_LENGTH),
+        unique=True, nullable=False, index=True)
 
     def __repr__(self):
         return (
-            f'Идентификатор машины: {self.item_id},\n'
+            f'ID машины: {self.id},\n'
+            f'Номер машины: {self.number},\n'
             f'Грузоподъемность: {self.weight},\n'
             f'Текущая локация машины: {self.current_location}.\n\n'
         )

@@ -1,11 +1,13 @@
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
-from app.core.db import Base
+from app.core import config, db
 
 
-class Location(Base):
-    zip = Column(String(5), unique=True, nullable=False, index=True)
+class Location(db.Base):
+    zip = Column(
+        String(config.settings.ZIP_CODE_LENGTH),
+        unique=True, nullable=False, index=True)
     state_name = Column(String(256), nullable=False)
     city = Column(String(256), nullable=False)
     lat = Column(String(10), nullable=False)
@@ -15,6 +17,7 @@ class Location(Base):
 
     def __repr__(self):
         return (
+            f'ID локации: {self.id},\n'
             f'Индекс: {self.zip},\n'
             f'Штат: {self.state},\n'
             f'Город: {self.city},\n'

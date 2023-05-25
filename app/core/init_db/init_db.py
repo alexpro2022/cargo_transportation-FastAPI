@@ -3,7 +3,7 @@ import csv
 from app.models.location import Location
 from app.models.car import Car
 from app.core.init_db.utils import (
-    get_random_location, get_random_id, get_random_weight, load)
+    get_random_location, get_random_car_number, get_random_weight, load)
 
 
 @load
@@ -20,7 +20,7 @@ def load_locations():
 @load
 def load_cars():
     return [Car(
-        item_id=get_random_id(),
+        number=get_random_car_number(),
         current_location=get_random_location(),
         weight=get_random_weight(),
     ) for i in range(20)]

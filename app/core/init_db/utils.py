@@ -33,9 +33,9 @@ def get_random_location():
     return random.randint(1, settings.number_of_locations)
 
 
-def get_random_id():
+def get_random_car_number():
     return ''.join((
-        str(random.randint(*settings.CAR_ID_RANGE)),
+        str(random.randint(*settings.CAR_NUMBER_RANGE)),
         random.choice(ascii_uppercase),
     ))
 
