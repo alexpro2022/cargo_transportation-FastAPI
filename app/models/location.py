@@ -5,7 +5,7 @@ from app.core.db import Base
 
 class Location(Base):
     zip = Column(String(100), unique=True, nullable=False)
-    state = Column(String(256), nullable=False)
+    state_name = Column(String(256), nullable=False)
     city = Column(String(256), nullable=False)
     lat = Column(String(100), nullable=False)
     lng = Column(String(100), nullable=False)
