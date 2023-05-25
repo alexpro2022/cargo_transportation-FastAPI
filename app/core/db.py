@@ -13,7 +13,7 @@ class PreBase:
     def __tablename__(cls):
         return cls.__name__.lower()
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
 
 
 metadata = MetaData(naming_convention={
@@ -24,7 +24,7 @@ metadata = MetaData(naming_convention={
     "pk": "pk_%(table_name)s",
 })
 Base = declarative_base(cls=PreBase, metadata=metadata)
-engine = create_async_engine(settings.database_url)  # , echo=True)
+engine = create_async_engine(settings.database_url)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession)
 
 

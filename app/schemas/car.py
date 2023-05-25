@@ -1,5 +1,9 @@
-from app.schemas.mixins import SchemasMixin
+from app.schemas.mixins import DBMixin, ZipMixin
 
 
-class Car(SchemasMixin):
+class CarResponse(DBMixin):
+    pass
+
+
+class CarUpdate(ZipMixin):
     pass

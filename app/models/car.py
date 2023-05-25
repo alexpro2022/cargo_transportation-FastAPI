@@ -3,7 +3,7 @@ from app.models.mixins import CommonFieldsMixin
 
 
 class Car(CommonFieldsMixin, Base):
-    pass
+    # pass
     # item_id = Column(String(5), unique=True, nullable=False)
     # current_location = Column(Integer, ForeignKey('location.id'))
     # weight = Column(Integer, nullable=False)

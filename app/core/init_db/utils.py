@@ -1,16 +1,21 @@
-import csv
+import random
+from string import ascii_uppercase
 
 from sqlalchemy.exc import IntegrityError
 
+from app.core.config import settings
 from app.core.db import AsyncSessionLocal
 from app.models.location import Location
-from app.models.car import Car
 
 
 def load(func):
     async def wrapper(*args, **kwargs):
+        data_name = '=None='
         data = func(*args, **kwargs)
-        data_name = f'={data[0].__class__.__name__.lower()}s=' if data else '=None='
+        if data:
+            data_name = f'={data[0].__class__.__name__.lower()}s='
+            if isinstance(data[0], Location):
+                settings.set_number_of_locations(len(data))
         session = AsyncSessionLocal()
         session.add_all(data)
         try:
@@ -24,16 +29,16 @@ def load(func):
     return wrapper
 
 
-@load
-def load_locations():
-    columns = [column.key for column in Location.__table__.columns]
-    with open(
-        'app/core/data/uszips.csv', encoding='utf-8', newline=''
-    ) as csv_file:
-        csvreader = csv.DictReader(csv_file, quotechar='"')
-        return [Location(**{key: value for key, value in row.items() if key in columns}) for row in csvreader]
+def get_random_location():
+    return random.randint(1, settings.number_of_locations)
 
 
-@load
-def load_cars():
-    return []
+def get_random_id():
+    return ''.join((
+        str(random.randint(*settings.CAR_ID_RANGE)),
+        random.choice(ascii_uppercase),
+    ))
+
+
+def get_random_weight():
+    return random.randint(settings.MIN_WEIGHT, settings.MAX_WEIGHT)

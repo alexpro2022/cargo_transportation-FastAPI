@@ -8,12 +8,14 @@ from sqlalchemy import exc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import Base
-# from app.models import User
+try:
+    from app.models import User
+except ImportError:
+    User = None
 
 ModelType = TypeVar('ModelType', bound=Base)
 CreateSchemaType = TypeVar('CreateSchemaType', bound=BaseModel)
 UpdateSchemaType = TypeVar('UpdateSchemaType', bound=BaseModel)
-User = None  # not in use in the app
 
 
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
@@ -22,27 +24,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def __init__(self, model: Type[ModelType]) -> None:
         self.model = model
 
-    def has_permission(self, obj: ModelType, user: User = None) -> None:
-        raise NotImplementedError('has_permission() must be implemented.')
-
-    def is_update_allowed(self, obj: ModelType, payload: dict) -> None:
-        raise NotImplementedError('is_update_allowed() must be implemented.')
-
-    def is_delete_allowed(self, obj: ModelType) -> None:
-        raise NotImplementedError('is_delete_allowed() must be implemented.')
-
-    async def __save(self, session: AsyncSession, obj: ModelType) -> ModelType:
-        session.add(obj)
-        try:
-            await session.commit()
-        except exc.IntegrityError:
-            await session.rollback()
-            raise HTTPException(
-                HTTPStatus.BAD_REQUEST,
-                self.OBJECT_ALREADY_EXISTS)
-        await session.refresh(obj)
-        return obj
-
+# === Read ===
     async def __get_by_attribute(
         self,
         session: AsyncSession,
@@ -91,6 +73,31 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         objs = await session.scalars(select(self.model))
         return objs.all()
 
+# === Create, Update, Delete ===
+    def has_permission(self, obj: ModelType, user: User = None) -> None:
+        raise NotImplementedError('has_permission() must be implemented.')
+
+    def is_update_allowed(self, obj: ModelType, payload: dict) -> None:
+        raise NotImplementedError('is_update_allowed() must be implemented.')
+
+    def is_delete_allowed(self, obj: ModelType) -> None:
+        raise NotImplementedError('is_delete_allowed() must be implemented.')
+
+    async def update_func(self, session, obj, update_data) -> None:
+        raise NotImplementedError('update_func() must be implemented.')
+
+    async def __save(self, session: AsyncSession, obj: ModelType) -> ModelType:
+        session.add(obj)
+        try:
+            await session.commit()
+        except exc.IntegrityError:
+            await session.rollback()
+            raise HTTPException(
+                HTTPStatus.BAD_REQUEST,
+                self.OBJECT_ALREADY_EXISTS)
+        await session.refresh(obj)
+        return obj
+
     async def create(
         self,
         session: AsyncSession,
@@ -102,6 +109,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             create_data['user_id'] = user.id
         return await self.__save(session, self.model(**create_data))
 
+    async def update_func_not_nested(self, session, obj, update_data):
+        for field in update_data:
+            if field in jsonable_encoder(obj):
+                setattr(obj, field, update_data[field])
+        return obj
+
     async def update(
         self,
         session: AsyncSession,
@@ -110,16 +123,15 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         user: User = None,
     ) -> ModelType:
         obj = await self.get_or_404(session, pk)
-        self.has_permission(obj, user)
+        if user is not None:
+            self.has_permission(obj, user)
         update_data = payload.dict(
             exclude_unset=True,
             exclude_none=True,
             exclude_defaults=True)
         self.is_update_allowed(obj, update_data)
-        for field in update_data:
-            if field in jsonable_encoder(obj):
-                setattr(obj, field, update_data[field])
-        return await self.__save(session, obj)
+        updated_obj = await self.update_func(session, obj, update_data)
+        return await self.__save(session, updated_obj)
 
     async def delete(
         self,
