@@ -1,0 +1,134 @@
+name: <Project name> CI/CD
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+  workflow_dispatch:
+
+jobs:
+
+  tests:
+    name: Tests flake8 and pytest
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install \
+            -r requirements.txt \
+            flake8 pep8-naming \
+            flake8-broken-line \
+            flake8-return \
+            flake8-isort \
+            pytest-cov 
+      - name: Run Tests
+        run: |
+          python -m flake8
+          pytest --cov --cov-report=xml
+      - name: Upload coverage reports to Codecov with GitHub Action
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}   
+
+  build_and_push_to_docker_hub:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker 
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Push to Docker Hub 
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}:latest           
+
+  server_environment:
+    name: Set up .env and copy infra files to server
+    runs-on: ubuntu-latest
+    needs: build_and_push_to_docker_hub
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3    
+      - name: Create project directory and .env-file
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            # cd ~ 
+            sudo mkdir -p ${{ secrets.PROJECT_NAME }}
+            sudo chmod 777 ${{ secrets.PROJECT_NAME }} 
+            # cd ${{ secrets.PROJECT_NAME }}
+            sudo cat > ${{ secrets.PROJECT_NAME }}/.env << _EOF_
+              DATABASE_URL=${{ secrets.DATABASE_URL }}
+              POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+              SECRET_KEY=${{ secrets.SECRET_KEY }}
+              # === two vars below are needed for docker-compose.yml
+              PROJECT_NAME=${{ secrets.PROJECT_NAME }}
+              DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+              # === <add other vars here>            
+            _EOF_
+      - name: copy infra files via ssh
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          source: "infra/docker-compose.yml, infra/nginx.conf"
+          target: ${{ secrets.PROJECT_NAME }}
+          overwrite: true
+          strip_components: 1
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: server_environment
+    steps:
+      - name: executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            # cd ~
+            cd ${{ secrets.PROJECT_NAME }}
+            sudo docker compose down
+            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
+            sudo systemctl stop nginx
+            sudo docker compose up -d --quiet-pull
+
+  send_telegram_message:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: send message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_USER_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: ${{ github.workflow }} успешно выполнен!

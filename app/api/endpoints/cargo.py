@@ -34,7 +34,7 @@ async def create_cargo(
     summary='Получение списка грузов.',
     description=(
         'Получение списка грузов (локации pick-up, delivery, '
-        'количество ближайших машин (с учетом грузоподъемности и веса груза) '
+        'количество ближайших машин (с подходящей грузоподъемностью) '
         'до груза ( =< 450 миль))'),
 )
 async def get_all_cargos(
@@ -50,10 +50,10 @@ async def get_all_cargos(
     description=(
         'Получение информации о конкретном грузе по ID '
         '(локации pick-up, delivery, вес, описание, список '
-        'номеров ВСЕХ (с учетом грузоподъемности и веса груза) машин '
+        'номеров ВСЕХ (с подходящей грузоподъемностью) машин '
         'с расстоянием до выбранного груза).'),
 )
-async def get_location(
+async def get_cargo(
     cargo_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
@@ -66,7 +66,7 @@ async def get_location(
     summary='Редактирование груза по ID.',
     description='Редактирование груза по ID (вес, описание)',
 )
-async def update_car_location(
+async def update_cargo(
     cargo_id: int,
     payload: CargoUpdate,
     session: AsyncSession = Depends(get_async_session),
