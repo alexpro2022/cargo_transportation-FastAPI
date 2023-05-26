@@ -1,20 +1,16 @@
-from app.models.location import Location as model_Location
-from app.schemas.location import LocationResponse as schema_Location
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
+from app.models.location import Location
 
 
-class LocationCRUD(CRUDBase[model_Location, schema_Location, schema_Location]):
-    OBJECT_ALREADY_EXISTS = 'Локация с таким zip-кодом уже существует!'
+class LocationCRUD(CRUDBase[Location, None, None]):
 
-    def is_delete_allowed(self, obj: model_Location) -> None:
-        pass
-
-    def is_update_allowed(self, obj: model_Location, payload: dict) -> None:
-        pass
-
-    def has_permission(self, obj: model_Location) -> None:
-        pass
+    async def get_location_by_zip(
+        self, session: AsyncSession, zip: str
+    ) -> Location:
+        return await self.get_by_attr(
+            session, 'zip', zip, exception=True)
 
 
-location_crud = LocationCRUD(model_Location)
+location_crud = LocationCRUD(Location)

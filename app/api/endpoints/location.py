@@ -10,9 +10,8 @@ router = APIRouter(prefix='/location', tags=['Locations'])
 @router.get(
     '/{location_id}',
     response_model=LocationResponse,
-    response_model_exclude_none=True,
-    summary='Возвращает локацию по id.',
-    description='Возвращает локацию по id.',
+    summary='Возвращает локацию по ID.',
+    description='Возвращает локацию по ID. Данного эндпоинта нет в ТЗ.',
 )
 async def get_location(
     location_id: int,

@@ -6,19 +6,23 @@ class Settings(BaseSettings):
     app_description: str = 'app_description'
     secret_key: str = 'secret_key'
     database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
-    # postgres_password: str
-    number_of_locations: int = 0
+    locations_amount: int = 0
     ZIP_CODE_LENGTH = 5
-    MIN_WEIGHT = 1
-    MAX_WEIGHT = 1000
+    STATE_NAME_LENGTH = 256
+    CITY_NAME_LENGTH = 256
+    COORDINATES_LENGTH = 10
     CAR_NUMBER_LENGTH = 5
     CAR_NUMBER_RANGE = (1000, 9999)
+    WEIGHT_RANGE = (1, 1000)
 
     class Config:
         env_file = '.env'
 
-    def set_number_of_locations(self, number: int) -> None:
-        self.number_of_locations = number
+    def set_locations_amount(self, amount: int) -> None:
+        self.locations_amount = amount
+
+    def get_locations_amount(self) -> int:
+        return self.locations_amount
 
 
 settings = Settings()

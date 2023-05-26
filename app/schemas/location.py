@@ -1,14 +1,14 @@
 from pydantic import Field
 
-from app.schemas.mixins import ZipMixin
+from app.core.config import settings
+from app.schemas import mixins
 
 
-class LocationResponse(ZipMixin):
-    id: int
-    state_name: str = Field(max_length=256)
-    city: str = Field(max_length=256)
-    lat: str = Field(max_length=100)
-    lng: str = Field(max_length=100)
-
-    class Config:
-        orm_mode = True
+class LocationResponse(mixins.DB):
+    zip: str = Field(
+        min_length=settings.ZIP_CODE_LENGTH,
+        max_length=settings.ZIP_CODE_LENGTH)
+    state_name: str = Field(max_length=settings.STATE_NAME_LENGTH)
+    city: str = Field(max_length=settings.CITY_NAME_LENGTH)
+    lat: str = Field(max_length=settings.COORDINATES_LENGTH)
+    lng: str = Field(max_length=settings.COORDINATES_LENGTH)

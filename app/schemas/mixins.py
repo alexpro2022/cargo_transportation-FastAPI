@@ -3,24 +3,45 @@ from pydantic import BaseModel, Field
 from app.core.config import settings
 
 
-class ZipMixin(BaseModel):
-    zip: str = Field(
+class CarNumber(BaseModel):
+    number: str = Field(
+        min_length=settings.CAR_NUMBER_LENGTH,
+        max_length=settings.CAR_NUMBER_LENGTH,
+    )
+
+
+class Weight(BaseModel):
+    weight: int = Field(gt=0)
+
+
+class Description(BaseModel):
+    description: str
+
+
+class CurrentLocationFK(BaseModel):
+    current_location: int
+
+
+class CurrentLocationZIP(BaseModel):
+    current_zip: str = Field(
         min_length=settings.ZIP_CODE_LENGTH,
         max_length=settings.ZIP_CODE_LENGTH,
     )
 
 
-class WeightMixin(BaseModel):
-    weight: int = Field(gt=0)
+class DeliveryLocationFK(BaseModel):
+    delivery_location: int
 
 
-class DescriptionMixin(BaseModel):
-    description: str
+class DeliveryLocationZIP(BaseModel):
+    delivery_zip: str = Field(
+        min_length=settings.ZIP_CODE_LENGTH,
+        max_length=settings.ZIP_CODE_LENGTH,
+    )
 
 
-class DBMixin(WeightMixin):
+class DB(BaseModel):
     id: int
-    current_location: int
 
     class Config:
         orm_mode = True

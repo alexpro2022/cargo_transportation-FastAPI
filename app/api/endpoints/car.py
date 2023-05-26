@@ -10,9 +10,9 @@ router = APIRouter(prefix='/car', tags=['Cars'])
 @router.get(
     '/',
     response_model=list[CarResponse],
-    response_model_exclude_none=True,
+    # response_model_exclude_none=True,
     summary='Возвращает список всех машин.',
-    description='Возвращает список всех машин.',
+    description='Возвращает список всех машин. Данного эндпоинта нет в ТЗ.',
 )
 async def get_all_cars(
     session: AsyncSession = Depends(get_async_session),
@@ -23,8 +23,10 @@ async def get_all_cars(
 @router.patch(
     '/{car_id}/',
     response_model=CarResponse,
-    summary='Редактирование локации машины.',
-    description='Редактирование локации машины.',
+    summary='Редактирование машины по ID.',
+    description=(
+        'Редактирование машины по ID '
+        '(локация (определяется по введенному zip-коду))'),
 )
 async def update_car_location(
     car_id: int,

@@ -15,7 +15,7 @@ def load(func):
         if data:
             data_name = f'={data[0].__class__.__name__.lower()}s='
             if isinstance(data[0], Location):
-                settings.set_number_of_locations(len(data))
+                settings.set_locations_amount(len(data))
         session = AsyncSessionLocal()
         session.add_all(data)
         try:
@@ -30,7 +30,7 @@ def load(func):
 
 
 def get_random_location():
-    return random.randint(1, settings.number_of_locations)
+    return random.randint(1, settings.get_locations_amount())
 
 
 def get_random_car_number():
@@ -41,4 +41,4 @@ def get_random_car_number():
 
 
 def get_random_weight():
-    return random.randint(settings.MIN_WEIGHT, settings.MAX_WEIGHT)
+    return random.randint(*settings.WEIGHT_RANGE)

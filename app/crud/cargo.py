@@ -1,20 +1,22 @@
-from app.models.cargo import Cargo as model_Cargo
-from app.schemas.cargo import CargoResponse as schema_Cargo
-
 from app.crud.base import CRUDBase
+from app.models.cargo import Cargo
+from app.schemas.cargo import CargoCreate, CargoUpdate
 
 
-class CargoCRUD(CRUDBase[model_Cargo, schema_Cargo, schema_Cargo]):
+class CargoCRUD(CRUDBase[Cargo, CargoCreate, CargoUpdate]):
     OBJECT_ALREADY_EXISTS = 'Груз с таким идентификатором уже существует!'
 
-    def is_delete_allowed(self, obj: model_Cargo) -> None:
+    async def has_permission(self, obj: Cargo) -> None:
         pass
 
-    def is_update_allowed(self, obj: model_Cargo, payload: dict) -> None:
+    async def is_update_allowed(self, obj: Cargo, payload: dict) -> None:
         pass
 
-    def has_permission(self, obj: model_Cargo) -> None:
+    async def is_delete_allowed(self, obj: Cargo) -> None:
         pass
 
+    #async def perform_create(self, create_data: dict):
+    #    pass
 
-cargo_crud = CargoCRUD(model_Cargo)
+
+cargo_crud = CargoCRUD(Cargo)
