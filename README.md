@@ -19,15 +19,10 @@ REST API сервиc для поиска ближайших машин к гру
 [![Pydantic](https://img.shields.io/badge/-Pydantic-464646?logo=Pydantic)](https://docs.pydantic.dev/)
 [![Uvicorn](https://img.shields.io/badge/-Uvicorn-464646?logo=Uvicorn)](https://www.uvicorn.org/) 
 
-
-[![SQLite3](https://img.shields.io/badge/-SQLite3-464646?logo=SQLite)](https://www.sqlite.com/version3.html)
-[![aiosqlite](https://img.shields.io/badge/-aiosqlite:%20Sqlite%20for%20AsyncIO-464646?logo=SQLite)](https://pypi.org/project/aiosqlite/)
-
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-464646?logo=PostgreSQL)](https://www.postgresql.org/)
 [![asyncpg](https://img.shields.io/badge/-asyncpg-464646?logo=PostgreSQL)](https://pypi.org/project/asyncpg/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-v2.0-blue?logo=sqlalchemy)](https://www.sqlalchemy.org/)
 [![Alembic](https://img.shields.io/badge/-Alembic-464646?logo=alembic)](https://alembic.sqlalchemy.org/en/latest/)
-
 
 [![docker_hub](https://img.shields.io/badge/-Docker_Hub-464646?logo=docker)](https://hub.docker.com/)
 [![docker_compose](https://img.shields.io/badge/-Docker%20Compose-464646?logo=docker)](https://docs.docker.com/compose/)
@@ -91,42 +86,6 @@ cd cargo_transportation-FastAPI && \
 cp env_example .env && \
 nano .env
 ```
-### Далее приложение может быть запущено двумя способами:
-<details>
-<summary>сервер Uvicorn/SQLite3</summary>
-
-2. Создайте и активируйте виртуальное окружение:
-   * Если у вас Linux/macOS
-   ```bash
-    python -m venv venv && source venv/bin/activate
-   ```
-   * Если у вас Windows
-   ```bash
-    python -m venv venv && source venv/Scripts/activate
-   ```
-
-3. Установите в виртуальное окружение все необходимые зависимости из файла **requirements.txt**:
-```bash
-python -m pip install --upgrade pip && pip install -r requirements.txt
-```
-
-4. В проекте уже инициализирована система миграций Alembic с настроенной автогенерацией имен внешних ключей моделей и создан файл первой миграции. Чтобы ее применить, необходимо выполнить команду:
-```bash
-alembic upgrade head
-```
-Будут созданы все таблицы из файла миграций.
-
-5. Запуск приложения - из корневой директории проекта выполните команду:
-```bash
-uvicorn app.main:app
-```
-Сервер Uvicorn запустит приложение по адресу http://127.0.0.1:8000/.
-Администрирование приложения может быть осуществлено через Swagger доступный по адресу http://127.0.0.1:8000/docs .
-
-6. Остановить Uvicorn можно комбинацией клавиш Ctl-C.
-</details>
-<details>
-<summary>Docker Compose/PostgreSQL</summary>
 
 2. Из корневой директории проекта выполните команду:
 ```bash
@@ -143,7 +102,7 @@ docker compose -f infra/local/docker-compose.yml down
 ```bash
 docker compose -f infra/local/docker-compose.yml down -v
 ```
-</details></details><hr>
+<hr>
 
 Для создания тестовых грузов можно воспользоваться следующими данными:
 
@@ -167,6 +126,7 @@ docker compose -f infra/local/docker-compose.yml down -v
 
 [⬆️Оглавление](#оглавление)
 
+</details></details><hr>
 
 
 
