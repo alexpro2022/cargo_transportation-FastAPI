@@ -45,7 +45,7 @@ class CargoCRUD(CRUDBase[Cargo, CargoCreate, CargoUpdate]):
             coord.append((location.lat, location.lng))
         return geodesic(*coord).miles
 
-    async def get_or_404(self, session: AsyncSession, pk: int) -> dict:
+    async def get_cargo_or_404(self, session: AsyncSession, pk: int) -> dict:
         async def get_car_numbers() -> list[tuple[str, int]]:
             result = []
             for car in await car_crud.get_all(session):
@@ -54,7 +54,7 @@ class CargoCRUD(CRUDBase[Cargo, CargoCreate, CargoUpdate]):
                     result.append((car.number, distance))
             return result
 
-        cargo = await super().get_or_404(session, pk)
+        cargo = await self.get_or_404(session, pk)
         d = jsonable_encoder(cargo)
         d['car_numbers'] = await get_car_numbers()
         return d

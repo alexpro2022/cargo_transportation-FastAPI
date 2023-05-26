@@ -134,9 +134,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self, session: AsyncSession, obj: ModelType, update_data: dict
     ) -> ModelType:
         """To be used for update models without FK."""
+        d = jsonable_encoder(obj)
         for field in update_data:
-            if field in jsonable_encoder(obj):
-                setattr(obj, field, update_data[field])
+            if field in d:
+                setattr(obj, field, update_data.get(field))
         return obj
 
     async def update(

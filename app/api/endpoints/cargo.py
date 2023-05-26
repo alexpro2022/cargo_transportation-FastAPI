@@ -57,7 +57,7 @@ async def get_cargo(
     cargo_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await cargo_crud.get_or_404(session, cargo_id)
+    return await cargo_crud.get_cargo_or_404(session, cargo_id)
 
 
 @router.patch(
