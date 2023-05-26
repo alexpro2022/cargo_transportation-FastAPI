@@ -8,17 +8,17 @@ services:
     #environment:
     #  - POSTGRES_PASSWORD=postgres     
     env_file:
-      - ../.env
+      - ../../.env
 
   web:
-    build: ../
+    build: ../..
     restart: always
     depends_on: 
       - db 
     # environment:
     #  - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
     env_file:
-      - ../.env
+      - ../../.env
   
   nginx:
     image: nginx:1.21.3-alpine

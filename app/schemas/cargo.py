@@ -28,8 +28,7 @@ class CargoUpdate(
 
 
 class CargoResponseGetCargo(CargoResponse):
-    pass
-    # car_numbers: list
+    car_numbers: list[tuple[str, int]]
 
 
 class CargoResponseGetCargos(
@@ -37,5 +36,4 @@ class CargoResponseGetCargos(
     mixins.CurrentLocationFK,
     mixins.DeliveryLocationFK,
 ):
-    pass
-    # nearest_cars_amount: int
+    nearest_cars_amount: int

@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     CAR_NUMBER_LENGTH = 5
     CAR_NUMBER_RANGE = (1000, 9999)
     WEIGHT_RANGE = (1, 1000)
+    MAX_RADIUS = 450
 
     class Config:
         env_file = '.env'

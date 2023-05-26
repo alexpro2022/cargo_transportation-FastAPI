@@ -94,7 +94,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """Check for certain conditions and raise exception if not allowed."""
         raise NotImplementedError('is_delete_allowed() must be implemented.')
 
-    async def perform_create(self, create_data: dict) -> None:
+    async def perform_create(
+        self, session: AsyncSession, create_data: dict
+    ) -> None:
         """Modify create_data if necessary."""
         raise NotImplementedError('perform_create() must be implemented.')
 
@@ -125,10 +127,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         create_data = payload.dict()
         if user is not None:
             create_data['user_id'] = user.id
-        await self.perform_create(create_data)
+        await self.perform_create(session, create_data)
         return await self.__save(session, self.model(**create_data))
 
-    async def perform_update_not_nested(self, session, obj, update_data):
+    async def perform_update_not_nested(
+        self, session: AsyncSession, obj: ModelType, update_data: dict
+    ) -> ModelType:
         """To be used for update models without FK."""
         for field in update_data:
             if field in jsonable_encoder(obj):
