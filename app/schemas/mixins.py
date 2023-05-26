@@ -11,7 +11,7 @@ class CarNumber(BaseModel):
 
 
 class Weight(BaseModel):
-    weight: int = Field(gt=0)
+    weight: int = Field(ge=1, le=1000)
 
 
 class Description(BaseModel):
