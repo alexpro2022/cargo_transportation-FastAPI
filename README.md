@@ -1,9 +1,6 @@
 # API: Сервис поиска ближайших машин для перевозки грузов.
 
-[![status](https://github.com/alexpro2022/QRkot_spreadsheets/actions/workflows/main.yml/badge.svg)](https://github.com/alexpro2022/QRkot_spreadsheets/actions)
-
-
-Необходимо разработать REST API сервиc для поиска ближайших машин к грузам.
+REST API сервиc для поиска ближайших машин к грузам.
 
 
 
