@@ -26,8 +26,6 @@ REST API сервиc для поиска ближайших машин к гру
 [![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-464646?logo=PostgreSQL)](https://www.postgresql.org/)
 [![asyncpg](https://img.shields.io/badge/-asyncpg-464646?logo=PostgreSQL)](https://pypi.org/project/asyncpg/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-v2.0-blue?logo=sqlalchemy)](https://www.sqlalchemy.org/)
-[![asyncio](https://img.shields.io/badge/-asyncio-464646?logo=sqlalchemy)](https://docs.sqlalchemy.org/en/14/orm/extensions/asyncio.html)
-[![orm](https://img.shields.io/badge/-orm-464646?logo=sqlalchemy)](https://docs.sqlalchemy.org/en/14/orm/quickstart.html)
 [![Alembic](https://img.shields.io/badge/-Alembic-464646?logo=alembic)](https://alembic.sqlalchemy.org/en/latest/)
 
 
@@ -71,7 +69,7 @@ REST API сервиc для поиска ближайших машин к гру
 
 
 ## Установка и запуск:
-Удобно использовать принцип copy-paste - копировать команды из GitHub Readme и вставлять в командную строку Git Bash или IDE (например VSCode).
+
 ### Предварительные условия:
 <details><summary>Развернуть</summary>
 Предполагается, что пользователь:
@@ -80,7 +78,6 @@ REST API сервиc для поиска ближайших машин к гру
 ```bash
 docker --version && docker-compose --version
 ```
-
 </details>
 <hr>
 <details>
@@ -94,6 +91,7 @@ cd cargo_transportation-FastAPI && \
 cp env_example .env && \
 nano .env
 ```
+### Далее приложение может быть запущено двумя способами:
 <details>
 <summary>сервер Uvicorn/SQLite3</summary>
 
