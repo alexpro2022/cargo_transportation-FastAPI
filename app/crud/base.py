@@ -2,7 +2,6 @@ from http import HTTPStatus
 from typing import Any, Generic, Type, TypeVar
 
 from fastapi import HTTPException
-from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy import exc, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -43,10 +42,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         attr_value: Any,
         exception: bool = False
     ) -> list[ModelType] | None:
+        """Raises `NOT_FOUND` exception if
+           no objects are found and `exception=True`."""
         objs = await self.__get_by_attribute(
             session, attr_name, attr_value)
         objects = objs.all()
-        if not objects:
+        if not objects and exception:
             raise HTTPException(HTTPStatus.NOT_FOUND, self.NOT_FOUND)
         return objects
 
@@ -57,6 +58,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         attr_value: Any,
         exception: bool = False
     ) -> ModelType | None:
+        """Raises `NOT_FOUND` exception if
+           no object is found and `exception=True`."""
         objs = await self.__get_by_attribute(
             session, attr_name, attr_value)
         object = objs.first()
@@ -74,10 +77,14 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     ) -> ModelType:
         return await self.get_by_attr(session, 'id', pk, exception=True)
 
-    async def get_all(self, session: AsyncSession) -> list[ModelType]:
+    async def get_all(
+        self, session: AsyncSession, exception: bool = False
+    ) -> list[ModelType]:
+        """Raises `NOT_FOUND` exception
+           if no objects are found and `exception=True`."""
         objs = await session.scalars(select(self.model))
         objects = objs.all()
-        if not objects:
+        if not objects and exception:
             raise HTTPException(HTTPStatus.NOT_FOUND, self.NOT_FOUND)
         return objects
 
@@ -87,26 +94,28 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         raise NotImplementedError('has_permission() must be implemented.')
 
     async def is_update_allowed(self, obj: ModelType, payload: dict) -> None:
-        """Check for certain conditions and raise exception if not allowed."""
+        """Check for custom conditions and raise exception if not allowed."""
         raise NotImplementedError('is_update_allowed() must be implemented.')
 
     async def is_delete_allowed(self, obj: ModelType) -> None:
-        """Check for certain conditions and raise exception if not allowed."""
+        """Check for custom conditions and raise exception if not allowed."""
         raise NotImplementedError('is_delete_allowed() must be implemented.')
 
     async def perform_create(
         self, session: AsyncSession, create_data: dict
     ) -> None:
-        """Modify create_data if necessary."""
+        """Modify create_data here if necessary."""
         raise NotImplementedError('perform_create() must be implemented.')
 
     async def perform_update(
         self, session: AsyncSession, obj: ModelType, update_data: dict
     ) -> ModelType:
-        """Modify update_data if necessary and return updated obj."""
+        """Modify update_data here if necessary and return updated object."""
         raise NotImplementedError('perform_update() must be implemented.')
 
     async def __save(self, session: AsyncSession, obj: ModelType) -> ModelType:
+        """Tries to write object to DB. Raises `BAD_REQUEST` exception
+           if object already exists in DB. """
         session.add(obj)
         try:
             await session.commit()
@@ -122,31 +131,34 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self,
         session: AsyncSession,
         payload: CreateSchemaType,
+        *,
         user: User = None,
+        perform_create: bool = True,
     ) -> ModelType:
+        """perform_create method is called if perform_create=True."""
         create_data = payload.dict()
         if user is not None:
             create_data['user_id'] = user.id
-        await self.perform_create(session, create_data)
+        if perform_create:
+            await self.perform_create(session, create_data)
         return await self.__save(session, self.model(**create_data))
-
-    async def perform_update_not_nested(
-        self, session: AsyncSession, obj: ModelType, update_data: dict
-    ) -> ModelType:
-        """To be used for update models without FK."""
-        d = jsonable_encoder(obj)
-        for field in update_data:
-            if field in d:
-                setattr(obj, field, update_data.get(field))
-        return obj
 
     async def update(
         self,
         session: AsyncSession,
         pk: int,
         payload: UpdateSchemaType,
+        *,
         user: User = None,
+        perform_update: bool = True,
     ) -> ModelType:
+        """perform_update method is called if perform_update=True
+           else the object is updated as follows:
+            ```py
+            for key in update_data:
+                setattr(obj, key, update_data[key])
+            ```
+        """
         obj = await self.get_or_404(session, pk)
         if user is not None:
             await self.has_permission(obj, user)
@@ -155,8 +167,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             exclude_none=True,
             exclude_defaults=True)
         await self.is_update_allowed(obj, update_data)
-        updated_obj = await self.perform_update(session, obj, update_data)
-        return await self.__save(session, updated_obj)
+        if perform_update:
+            obj = await self.perform_update(session, obj, update_data)
+        else:
+            for key in update_data:
+                setattr(obj, key, update_data[key])
+        return await self.__save(session, obj)
 
     async def delete(
         self,

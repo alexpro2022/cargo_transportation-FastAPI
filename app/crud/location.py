@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core import settings
 from app.crud.base import CRUDBase
 from app.models.location import Location
 
@@ -10,7 +11,7 @@ class LocationCRUD(CRUDBase[Location, None, None]):
         self, session: AsyncSession, zip: str
     ) -> Location:
         return await self.get_by_attr(
-            session, 'zip', zip, exception=True)
+            session, settings.ZIP, zip, exception=True)
 
 
 location_crud = LocationCRUD(Location)

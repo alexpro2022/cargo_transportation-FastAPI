@@ -1,7 +1,7 @@
 from pydantic import Field
 
-from app.core.config import settings
-from app.schemas import mixins
+from app.core import settings
+from . import mixins
 
 
 class LocationResponse(mixins.DB):

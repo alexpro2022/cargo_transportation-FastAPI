@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
 from app.api.routers import main_router
-from app.core.config import settings
-from app.core.init_db.init_db import load_data
+from app.core import load_data, settings
+
 
 app = FastAPI(
     title=settings.app_title,

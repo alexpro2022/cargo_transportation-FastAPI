@@ -1,12 +1,12 @@
 from sqlalchemy import Column, String
 
-from app.core import config, db
+from app.core import db, settings
 from app.models.mixins import CommonFieldsMixin
 
 
 class Car(CommonFieldsMixin, db.Base):
     number = Column(
-        String(config.settings.CAR_NUMBER_LENGTH),
+        String(settings.CAR_NUMBER_LENGTH),
         unique=True, nullable=False, index=True)
 
     def __repr__(self):
