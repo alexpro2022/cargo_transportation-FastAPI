@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, encoders
 
 from app.core.db import AsyncSession, get_async_session
 from app.crud.cargo import cargo_crud
@@ -93,6 +93,6 @@ async def get_cargo(
 ):
     cargo = await cargo_crud.get_or_404(session, cargo_id)
     return GetCargoResponse(
-        cargo=cargo,
+        **encoders.jsonable_encoder(cargo),
         car_numbers=await get_car_numbers(session, cargo),
     )

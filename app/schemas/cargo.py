@@ -46,6 +46,5 @@ class GetCargosResponse(BaseModel):
     nearest_cars_amount: int
 
 
-class GetCargoResponse(BaseModel):
-    cargo: CargoResponse
+class GetCargoResponse(CargoResponse):
     car_numbers: list[tuple[str, int]]
