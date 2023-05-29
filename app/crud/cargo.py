@@ -8,7 +8,6 @@ from app.schemas.cargo import CargoCreate, CargoUpdate
 
 
 class CargoCRUD(CRUDBase[Cargo, CargoCreate, CargoUpdate]):
-    OBJECT_ALREADY_EXISTS = 'Груз с таким идентификатором уже существует!'
     NOT_FOUND = 'Груз не найден, проверьте ID или параметры запроса.'
 
     async def is_update_allowed(self, obj: Cargo, payload: dict) -> None:

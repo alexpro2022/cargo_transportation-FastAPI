@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
 from app.core import settings
 from . import mixins
