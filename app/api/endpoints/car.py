@@ -15,8 +15,7 @@ router = APIRouter(prefix='/car', tags=['Cars'])
     description='Возвращает список всех машин. Данного эндпоинта нет в ТЗ.',
 )
 async def get_all_cars(session: AsyncSession = Depends(get_async_session)):
-    cars = await car_crud.get_all(session)
-    return [await CarResponse.to_representation(session, car) for car in cars]
+    return await car_crud.get_all(session)
 
 
 @router.put(
@@ -32,5 +31,4 @@ async def update_car(
     payload: CarUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    car = await car_crud.update(session, car_id, payload)
-    return await CarResponse.to_representation(session, car)
+    return await car_crud.update(session, car_id, payload)

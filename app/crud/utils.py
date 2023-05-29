@@ -4,16 +4,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core import settings
 from app.models import Car, Cargo
 from .car import car_crud
-from .location import location_crud
 
 
 async def get_distance(session: AsyncSession, cargo: Cargo, car: Car) -> int:
-    coord = []
-    for item in (cargo, car):
-        location = await location_crud.get_or_404(
-            session, item.current_location)
-        coord.append((location.lat, location.lng))
-    return geodesic(*coord).miles
+    return int(geodesic(
+        (cargo.pick_up.lat, cargo.pick_up.lng),
+        (car.car_location.lat, car.car_location.lng),
+    ).miles)
 
 
 async def get_cars_amount(session: AsyncSession, cargo: Cargo) -> int:

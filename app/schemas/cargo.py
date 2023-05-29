@@ -1,14 +1,10 @@
-from pydantic import Field
-from sqlalchemy.ext.asyncio import AsyncSession
+from pydantic import BaseModel, Field
 
 from app.core import settings
-from app.crud import utils as crud
-from app.models import Cargo
-from . import mixins, utils
+from . import mixins
 from .location import LocationResponse
 
 
-# IN
 class CargoInBase(
     mixins.Weight,
 ):
@@ -29,18 +25,9 @@ class CargoUpdate(CargoInBase):
     pass
 
 
-# OUT
 class CargoOutBase(mixins.DB):
-    current_location: LocationResponse
-    delivery_location: LocationResponse
-
-    @classmethod
-    async def to_representation(
-            self, session: AsyncSession, cargo: Cargo) -> dict:
-        cargo = await utils.include_nested_location(
-            session, cargo, settings.CURRENT_LOCATION)
-        return await utils.include_nested_location(
-            session, cargo, settings.DELIVERY_LOCATION)
+    pick_up: LocationResponse
+    delivery: LocationResponse
 
 
 class CargoResponse(
@@ -50,25 +37,15 @@ class CargoResponse(
     pass
 
 
-class GetCargoResponse1(CargoResponse):
-    car_numbers: list[tuple[str, int]]
-
-    @classmethod
-    async def to_representation(
-            self, session: AsyncSession, cargo: Cargo) -> dict:
-        car_numbers = await crud.get_car_numbers(session, cargo)
-        cargo = utils.include_nested(
-            cargo, ((settings.CAR_NUMBERS, car_numbers),))
-        return await super().to_representation(session, cargo)
+class CargoDeleteResponse(mixins.DB, CargoInBase):
+    pass
 
 
-class GetCargoResponse2(CargoOutBase):
+class GetCargosResponse(BaseModel):
+    cargo: CargoResponse
     nearest_cars_amount: int
 
-    @classmethod
-    async def to_representation(
-            self, session: AsyncSession, cargo: Cargo) -> dict:
-        nearest_cars_amount = await crud.get_cars_amount(session, cargo)
-        cargo = utils.include_nested(
-            cargo, ((settings.NEAREST_CARS_AMOUNT, nearest_cars_amount),))
-        return await super().to_representation(session, cargo)
+
+class GetCargoResponse(BaseModel):
+    cargo: CargoResponse
+    car_numbers: list[tuple[str, int]]

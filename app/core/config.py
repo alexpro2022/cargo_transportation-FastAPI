@@ -18,12 +18,12 @@ class Settings(BaseSettings):
     WEIGHT_RANGE = (1, 1000)
     MAX_RADIUS = 450
     # Text constants should correspond to models and/or schemas field_names
-    CAR_NUMBERS = 'car_numbers'
+    # CAR_NUMBERS = 'car_numbers'
     CURRENT_LOCATION = 'current_location'
     CURRENT_ZIP = 'current_zip'
     DELIVERY_LOCATION = 'delivery_location'
     DELIVERY_ZIP = 'delivery_zip'
-    NEAREST_CARS_AMOUNT = 'nearest_cars_amount'
+    # NEAREST_CARS_AMOUNT = 'nearest_cars_amount'
     ZIP = 'zip'
 
     class Config:

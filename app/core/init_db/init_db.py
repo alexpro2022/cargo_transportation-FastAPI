@@ -26,7 +26,6 @@ def load_cars():
     ) for i in range(20)]
 
 
-async def load_data(do: bool = True):
-    if do:
-        await load_locations()
-        await load_cars()
+async def load_data():
+    await load_locations()
+    await load_cars()

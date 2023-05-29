@@ -4,7 +4,6 @@ from app.core import settings
 from app.crud.base import CRUDBase
 from app.crud.location import location_crud
 from app.models import Car
-# from app.schemas.car import CarUpdate
 
 
 class CarCRUD(CRUDBase[Car, None, None]):

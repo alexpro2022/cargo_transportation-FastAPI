@@ -1,5 +1,4 @@
 from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
 
 from app.core import config, db
 
@@ -12,8 +11,6 @@ class Location(db.Base):
     city = Column(String(256), nullable=False)
     lat = Column(String(10), nullable=False)
     lng = Column(String(10), nullable=False)
-    cars = relationship('Car', cascade='delete')
-    # cargos = relationship('Cargo', cascade='delete')
 
     def __repr__(self):
         return (
