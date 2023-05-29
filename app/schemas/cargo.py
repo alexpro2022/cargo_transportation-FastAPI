@@ -41,8 +41,7 @@ class CargoDeleteResponse(mixins.DB, CargoInBase):
     pass
 
 
-class GetCargosResponse(BaseModel):
-    cargo: CargoOutBase
+class GetCargosResponse(CargoOutBase):
     nearest_cars_amount: int
 
 

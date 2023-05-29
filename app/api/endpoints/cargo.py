@@ -72,7 +72,7 @@ async def get_all_cargos(
 ):
     return [
         GetCargosResponse(
-            cargo=cargo,
+            **encoders.jsonable_encoder(cargo),
             nearest_cars_amount=await get_cars_amount(session, cargo))
         for cargo in await cargo_crud.get_all(session)]
 
