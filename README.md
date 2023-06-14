@@ -80,7 +80,7 @@ docker --version && docker-compose --version
 </details>
 
 <details>
-<summary>Локальный запуск</summary> 
+<summary>Локальный запуск: Docker Compose</summary> 
 
 1. Клонируйте репозиторий с GitHub и введите данные для переменных окружения (значения даны для примера, но их можно оставить):
 
