@@ -128,7 +128,6 @@ docker compose -f infra/local/docker-compose.yml down -v
 }
 ```
  
-<h1></h1>
 [⬆️Оглавление](#оглавление)
 
 </details></details>
