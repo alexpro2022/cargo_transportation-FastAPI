@@ -70,8 +70,8 @@ REST API сервиc для поиска ближайших машин к гру
 ## Установка и запуск:
 
 <details><summary>Предварительные условия</summary>
-Предполагается, что пользователь:
- - установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
+ 
+Предполагается, что пользователь установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
 
 ```bash
 docker --version && docker-compose --version
