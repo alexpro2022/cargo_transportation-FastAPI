@@ -28,4 +28,4 @@ def load_cars():
 
 async def load_data():
     await load_locations()
-    # await load_cars()
+    await load_cars()
