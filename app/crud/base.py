@@ -33,7 +33,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     ):
         return await session.scalars(
             select(self.model).where(
-                getattr(self.model, attr_name) == attr_value))
+                getattr(self.model, attr_name) == attr_value
+            ).order_by(self.model.id))
 
     async def get_all_by_attr(
         self,
