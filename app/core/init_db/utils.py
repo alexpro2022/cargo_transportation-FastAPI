@@ -16,16 +16,16 @@ def load(func):
             data_name = f'={data[0].__class__.__name__.lower()}s='
             if isinstance(data[0], Location):
                 settings.set_locations_amount(len(data))
-        session = AsyncSessionLocal()
-        session.add_all(data)
-        try:
-            print(f'Loading data {data_name} ...')
-            await session.commit()
-        except IntegrityError:
-            print(f'Data {data_name} has already been loaded ... exiting')
-            await session.rollback()
-        else:
-            print(f'Data {data_name} has successfully been loaded')
+        async with AsyncSessionLocal() as session:
+            session.add_all(data)
+            try:
+                print(f'Loading data {data_name} ...')
+                await session.commit()
+            except IntegrityError:
+                print(f'Data {data_name} has already been loaded ... exiting')
+                await session.rollback()
+            else:
+                print(f'Data {data_name} has successfully been loaded')
     return wrapper
 
 
