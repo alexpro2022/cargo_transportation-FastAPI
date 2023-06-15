@@ -16,7 +16,7 @@ router = APIRouter(prefix='/car', tags=['Cars'])
 )
 async def get_all_cars(session: AsyncSession = Depends(get_async_session)):
     cars = await car_crud.get_all(session)
-    return sorted(cars)
+    return sorted(cars, key=lambda car: car.id)
 
 
 @router.put(
