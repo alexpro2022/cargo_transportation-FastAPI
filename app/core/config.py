@@ -2,12 +2,14 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    #
-    app_title: str = 'app_title'
-    app_description: str = 'app_description'
-    secret_key: str = 'secret_key'
-    database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
-    #
+    # constants
+    DEFAULT_STR = 'To be implemented in .env file'
+    DEFAULT_DB_URL = 'sqlite+aiosqlite:///./fastapi.db'
+    # environment variables
+    app_title: str = DEFAULT_STR
+    app_description: str = DEFAULT_STR
+    secret_key: str = DEFAULT_STR
+    database_url: str = DEFAULT_DB_URL
     locations_amount: int = 0
     ZIP_CODE_LENGTH = 5
     STATE_NAME_LENGTH = 256
