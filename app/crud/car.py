@@ -1,9 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core import settings
+from app.core import AsyncSessionLocal, get_random_location, settings
 from app.crud.base import CRUDBase
 from app.crud.location import location_crud
 from app.models import Car
+from app.schemas.car import CarUpdateCurrentLocation
 
 
 class CarCRUD(CRUDBase[Car, None, None]):
@@ -19,6 +20,16 @@ class CarCRUD(CRUDBase[Car, None, None]):
             session, update_data[settings.CURRENT_ZIP])
         obj.current_location = current_location.id
         return obj
+
+    async def update_cars_location(self) -> None:
+        async with AsyncSessionLocal() as session:
+            [await self.update(
+                session,
+                car.id,
+                payload=CarUpdateCurrentLocation(
+                    current_location=get_random_location()),
+                perform_update=False,
+            ) for car in await self.get_all(session)]
 
 
 car_crud = CarCRUD(Car)

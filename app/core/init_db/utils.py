@@ -29,16 +29,16 @@ def load(func):
     return wrapper
 
 
-def get_random_location():
+def get_random_location() -> int:
     return random.randint(1, settings.get_locations_amount())
 
 
-def get_random_car_number():
+def get_random_car_number() -> str:
     return ''.join((
         str(random.randint(*settings.CAR_NUMBER_RANGE)),
         random.choice(ascii_uppercase),
     ))
 
 
-def get_random_weight():
+def get_random_weight() -> int:
     return random.randint(*settings.WEIGHT_RANGE)

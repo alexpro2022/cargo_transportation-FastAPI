@@ -1,3 +1,4 @@
 from .config import settings  # noqa
 from .init_db.init_db import load_data  # noqa
-from .db import get_async_session  # noqa
+from .db import AsyncSessionLocal, get_async_session  # noqa
+from .init_db.init_db import get_random_location  # noqa

@@ -1,4 +1,4 @@
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 from app.core import settings
 from . import mixins
@@ -7,6 +7,10 @@ from .location import LocationResponse
 
 class CarUpdate(mixins.CurrentLocationZIP):
     pass
+
+
+class CarUpdateCurrentLocation(BaseModel):
+    current_location: int
 
 
 class CarResponse(

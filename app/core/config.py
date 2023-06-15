@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     app_description: str = DEFAULT_STR
     secret_key: str = DEFAULT_STR
     database_url: str = DEFAULT_DB_URL
+    SCHEDULER_INTERVAL = 20
+    SCHEDULER_TRIGGER = 'interval'
     locations_amount: int = 0
     ZIP_CODE_LENGTH = 5
     STATE_NAME_LENGTH = 256
