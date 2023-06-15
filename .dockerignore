@@ -1,5 +1,5 @@
 *
 !requirements.txt
 !alembic.ini
-!alembic/
-!app/
+!alembic
+!app
