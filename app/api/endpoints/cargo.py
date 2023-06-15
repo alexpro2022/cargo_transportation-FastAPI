@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, encoders
+from fastapi import APIRouter, Depends, encoders, Query
 
 from app.core.db import AsyncSession, get_async_session
 from app.crud.cargo import cargo_crud
@@ -63,18 +63,25 @@ async def delete_cargo(
     response_model=list[GetCargosResponse],
     summary='Получение списка грузов.',
     description=(
-        'Получение списка грузов (локации pick-up, delivery, '
-        'количество ближайших машин (с подходящей грузоподъемностью) '
-        'до груза ( =< 450 миль))'),
+        'Получение списка грузов с фильтрацией по максимальному весу груза, '
+        'задаваемому query-параметром `max_weight`. Список состоит из полей '
+        'локаций pick-up / delivery и поля количества ближайших машин '
+        '(с подходящей грузоподъемностью) до груза (расстояние до груза '
+        'не более кол-ва миль, задаваемых query-параметром `max_distance`)'
+    )
 )
 async def get_all_cargos(
+    max_weight: int = Query(ge=1, le=1000, example=500),
+    max_distance: int = Query(ge=1, example=500),
     session: AsyncSession = Depends(get_async_session),
 ):
     return [
         GetCargosResponse(
             **encoders.jsonable_encoder(cargo),
-            nearest_cars_amount=await get_cars_amount(session, cargo))
-        for cargo in await cargo_crud.get_all(session)]
+            nearest_cars_amount=await get_cars_amount(
+                session, cargo, max_distance))
+        for cargo in await cargo_crud.get_all(session)
+        if cargo.weight <= max_weight]
 
 
 @router.get(
