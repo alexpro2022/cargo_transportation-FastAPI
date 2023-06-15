@@ -1,18 +1,22 @@
-# API: Сервис поиска ближайших машин для перевозки грузов.
+# Сервис поиска ближайших машин для перевозки грузов
 
 REST API сервиc для поиска ближайших машин к грузам.
 
+[Тестовое задание](https://faint-adasaurus-4bc.notion.site/web-Python-Middle-c1467cf373c24f0cafb8bfe0fe77cc79)
 
+<br>
 
 ## Оглавление
 - [Технологии](#технологии)
 - [Описание работы](#описание-работы)
 - [Установка и запуск](#установка-и-запуск)
+- [Удаление](#удаление)
 - [Автор](#автор)
 
+<br>
 
 ## Технологии
-<details><summary>Развернуть</summary>
+<details><summary>Подробнее</summary><br>
 
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue?logo=python)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/-FastAPI-464646?logo=fastapi)](https://fastapi.tiangolo.com/)
@@ -31,7 +35,7 @@ REST API сервиc для поиска ближайших машин к гру
 [⬆️Оглавление](#оглавление)
 </details>
 
-
+<br>
 
 ## Описание работы
 
@@ -61,22 +65,22 @@ REST API сервиc для поиска ближайших машин к гру
 
 [⬆️Оглавление](#оглавление)
 
-
+<br>
 
 ## Установка и запуск:
 
-### Предварительные условия:
-<details><summary>Развернуть</summary>
-Предполагается, что пользователь:
- - установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
+<details><summary>Предварительные условия</summary>
+ 
+Предполагается, что пользователь установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
 
 ```bash
 docker --version && docker-compose --version
 ```
+<h1></h1>
 </details>
-<hr>
+
 <details>
-<summary>Локальный запуск</summary> 
+<summary>Локальный запуск: Docker Compose</summary> 
 
 1. Клонируйте репозиторий с GitHub и введите данные для переменных окружения (значения даны для примера, но их можно оставить):
 
@@ -102,7 +106,7 @@ docker compose -f infra/local/docker-compose.yml down
 ```bash
 docker compose -f infra/local/docker-compose.yml down -v
 ```
-<hr>
+<h1></h1>
 
 Для создания тестовых грузов можно воспользоваться следующими данными:
 
@@ -123,17 +127,27 @@ docker compose -f infra/local/docker-compose.yml down -v
   "weight": 500
 }
 ```
-
+ 
 [⬆️Оглавление](#оглавление)
 
-</details></details><hr>
+</details></details>
 
+<br>
 
+## Удаление:
+Для удаления проекта выполните следующие действия:
+```bash
+cd .. && rm -fr cargo_transportation-FastAPI
+```
+  
+[⬆️Оглавление](#оглавление)
+
+<br>
 
 ## Автор
 [Aleksei Proskuriakov](https://github.com/alexpro2022)
 
-[⬆️В начало](#API:-Сервис-поиска-ближайших-машин-для-перевозки-грузов.)
+[⬆️В начало](#сервис-поиска-ближайших-машин-для-перевозки-грузов)
 
 
 
