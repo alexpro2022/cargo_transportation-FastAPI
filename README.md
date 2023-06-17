@@ -1,5 +1,8 @@
 # Сервис поиска ближайших машин для перевозки грузов
 
+[![Cargo Test Suite](https://github.com/alexpro2022/cargo_transportation-FastAPI/actions/workflows/main.yml/badge.svg)](https://github.com/alexpro2022/cargo_transportation-FastAPI/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/alexpro2022/cargo_transportation-FastAPI/branch/main/graph/badge.svg?token=eM2l3ZnkAn)](https://codecov.io/gh/alexpro2022/cargo_transportation-FastAPI)
+
 REST API сервиc для поиска ближайших машин к грузам.
 
 [Тестовое задание](https://faint-adasaurus-4bc.notion.site/web-Python-Middle-c1467cf373c24f0cafb8bfe0fe77cc79)
