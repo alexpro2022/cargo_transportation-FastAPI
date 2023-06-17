@@ -1,11 +1,12 @@
 from datetime import datetime as dt
-
 from http import HTTPStatus
 
 from app.core.config import settings
 
-from .fixtures.data import client, FILTER_BY_DATES, PREFIX, PRICES, LAST_PRICE, QUERY_TICKER
-from .utils import check_data, check_item, get_all, get_sorted, get_url, get_randome_timestamps, get_test_data, get_test_prices
+from .fixtures.data import (FILTER_BY_DATES, LAST_PRICE, PREFIX, PRICES,
+                            QUERY_TICKER, client)
+from .utils import (check_data, check_item, get_all, get_randome_timestamps,
+                    get_sorted, get_test_data, get_test_prices, get_url)
 
 
 def test_get_all_for_currency():

@@ -7,6 +7,7 @@ from sqlalchemy import exc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import Base
+
 try:
     from app.models import User
 except ImportError:

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 
 from app.core import settings
+
 from . import mixins
 from .location import LocationResponse
 

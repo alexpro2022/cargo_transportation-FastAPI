@@ -1,18 +1,13 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, encoders, Query
+from fastapi import APIRouter, Depends, Query, encoders
 
 from app.core.db import AsyncSession, get_async_session
 from app.crud.cargo import cargo_crud
 from app.crud.utils import get_car_numbers, get_cars_amount
-from app.schemas.cargo import (
-    CargoCreate,
-    CargoDeleteResponse,
-    CargoResponse,
-    CargoUpdate,
-    GetCargoResponse,
-    GetCargosResponse,
-)
+from app.schemas.cargo import (CargoCreate, CargoDeleteResponse, CargoResponse,
+                               CargoUpdate, GetCargoResponse,
+                               GetCargosResponse)
 
 router = APIRouter(prefix='/cargo', tags=['Cargos'])
 

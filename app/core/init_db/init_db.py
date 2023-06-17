@@ -1,9 +1,9 @@
 import csv
 
-from app.models.location import Location
+from app.core.init_db.utils import (get_random_car_number, get_random_location,
+                                    get_random_weight, load)
 from app.models.car import Car
-from app.core.init_db.utils import (
-    get_random_location, get_random_car_number, get_random_weight, load)
+from app.models.location import Location
 
 
 @load

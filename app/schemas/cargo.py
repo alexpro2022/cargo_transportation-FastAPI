@@ -1,6 +1,7 @@
 from pydantic import Field
 
 from app.core import settings
+
 from . import mixins
 from .location import LocationResponse
 

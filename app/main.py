@@ -5,7 +5,6 @@ from app.api.routers import main_router
 from app.core import load_data, settings
 from app.crud.car import car_crud
 
-
 app = FastAPI(
     title=settings.app_title,
     description=settings.app_description,
