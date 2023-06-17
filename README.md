@@ -19,7 +19,6 @@ REST API сервиc для поиска ближайших машин к гру
 <br>
 
 ## Технологии
-<details><summary>Подробнее</summary><br>
 
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue?logo=python)](https://www.python.org/)
 [![APScheduler](https://img.shields.io/badge/-APScheduler-464646?logo=APScheduler)](https://apscheduler.readthedocs.io/en/stable/index.html)
@@ -37,7 +36,6 @@ REST API сервиc для поиска ближайших машин к гру
 [![Nginx](https://img.shields.io/badge/-NGINX-464646?logo=NGINX)](https://nginx.org/ru/)
 
 [⬆️Оглавление](#оглавление)
-</details>
 
 <br>
 
