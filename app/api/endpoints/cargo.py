@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, encoders, Query
 
 from app.core.db import AsyncSession, get_async_session
@@ -71,8 +73,8 @@ async def delete_cargo(
     )
 )
 async def get_all_cargos(
-    max_weight: int = Query(ge=1, le=1000, example=500),
-    max_distance: int = Query(ge=1, example=500),
+    max_weight: Annotated[int, Query(ge=1, le=1000, example=500)] = 1000,
+    max_distance: Annotated[int, Query(ge=1, example=500)] = 450,
     session: AsyncSession = Depends(get_async_session),
 ):
     return [
