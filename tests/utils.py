@@ -1,3 +1,10 @@
+def check_location(location):
+    assert isinstance(location, dict)
+    assert isinstance(location['id'], int)
+    assert isinstance(location['zip'], str)
+    assert isinstance(location['city'], str)
+    assert isinstance(location['lat'], str)
+    assert isinstance(location['lng'], str)
 
 
 def check_car(car):
@@ -5,13 +12,7 @@ def check_car(car):
     assert isinstance(car['id'], int)
     assert isinstance(car['weight'], int)
     assert isinstance(car['number'], str)
-    assert isinstance(car['car_location'], dict)
-    assert isinstance(car['car_location']['id'], int)
-    assert isinstance(car['car_location']['zip'], str)
-    assert isinstance(car['car_location']['state_name'], str)
-    assert isinstance(car['car_location']['city'], str)
-    assert isinstance(car['car_location']['lat'], str)
-    assert isinstance(car['car_location']['lng'], str)
+    check_location(car['car_location'])
 
 
 '''import random
