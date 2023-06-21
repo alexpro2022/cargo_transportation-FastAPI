@@ -43,8 +43,8 @@ async def load_db():
     async with TestingSessionLocal() as session:
         locations = load_locations()
         settings.set_locations_amount(len(locations))
-        for test_data in (locations, load_cars()):
-            session.add_all(set(test_data))
+        for test_data in (locations, set(load_cars())):
+            session.add_all(test_data)
             await session.commit()
 
 

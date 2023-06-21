@@ -6,7 +6,7 @@ from app.models.location import Location
 
 
 class LocationCRUD(CRUDBase[Location, None, None]):
-    NOT_FOUND = 'Введен неверный zip-код - проверьте параметры запроса.'
+    NOT_FOUND = 'Локация не найдена - неверный location_id или zip-код.'
 
     async def get_location_by_zip(
         self, session: AsyncSession, zip: str
