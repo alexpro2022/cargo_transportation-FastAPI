@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.core.db import Base, get_async_session, settings
-from app.core.init_db.utils import (get_random_car_number, get_random_location,
+from app.core.init_db.utils import (get_random_car_number,
+                                    get_random_location,
                                     get_random_weight)
 from app.main import app
 from app.models.car import Car

@@ -1,3 +1,41 @@
+from .fixtures.data import (get_cargo_get_all_response_example,
+                            get_cargo_get_id_response_example,
+                            get_cargo_post_response_example,
+                            get_cargo_put_response_example)
+
+
+def empty_list(response_json):
+    assert response_json == []
+    return 'DONE'
+
+
+def __assert(response_json: dict, example: dict):
+    assert isinstance(response_json, dict)
+    assert isinstance(example, dict)
+    response_json.pop('id')
+    assert response_json == example, (f'{response_json}\n{example}\n')
+    return 'DONE'
+
+
+def check_cargo_post_response(response_json: dict):
+    return __assert(response_json, get_cargo_post_response_example())
+
+
+def check_cargo_put_response(response_json: dict):
+    return __assert(response_json, get_cargo_put_response_example())
+
+
+def check_cargo_get_id_response(response_json: dict):
+    response_json['car_numbers'] = []
+    return __assert(response_json, get_cargo_get_id_response_example())
+
+
+def check_cargo_get_all_response(response_json: list):
+    assert isinstance(response_json, list)
+    response_json = response_json[0]
+    return __assert(response_json, get_cargo_get_all_response_example())
+
+
 def check_location(location):
     assert isinstance(location, dict)
     assert isinstance(location['id'], int)

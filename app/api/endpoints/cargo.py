@@ -43,7 +43,7 @@ async def update_cargo(
 
 
 @router.delete(
-    '/{cargo_id}',
+    '/{cargo_id}/',
     response_model=CargoDeleteResponse,
     summary='Удаление груза по ID.',
     description='Удаление груза по ID.',
@@ -82,7 +82,7 @@ async def get_all_cargos(
 
 
 @router.get(
-    '/{cargo_id}',
+    '/{cargo_id}/',
     response_model=GetCargoResponse,
     summary='Получение информации о конкретном грузе по ID.',
     description=(

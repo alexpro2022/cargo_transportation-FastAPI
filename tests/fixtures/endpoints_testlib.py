@@ -15,23 +15,23 @@ QueryParams: TypeAlias = dict[str:str] | None
 Payload: TypeAlias = dict[str:str] | None
 
 
-def get_invalid_str() -> str:
-    return ('', ' ', '-invalid-')
+def get_invalid_str() -> tuple[str]:
+    return None, '', ' ', '-invalid-'
 
 
-def get_invalid_int() -> str:
-    return (0, -1, 10**12)
+def get_invalid_int() -> tuple[int]:
+    return 0, -1, 10**12
 
 
 def get_invalid_dict_keys(original: dict) -> tuple[dict]:
     dicts = []
     for key in original:
-        for invalid_key in ('', ' ', '-invalid-'):
+        for invalid_key in get_invalid_str():
             dd = original.copy()
             value = dd.pop(key)
             dd[invalid_key] = value
             dicts.append(dd)
-    return tuple(dicts)
+    return None, *dicts
 
 
 def get_invalid(item: int | str | dict) -> tuple[int | str | dict]:
@@ -123,6 +123,8 @@ def valid_values_standard_tests(
 
     # valid_request_test
     response = assert_response(HTTPStatus.OK, method, endpoint, path_param, query_params, payload)
+    if method.upper() == 'DELETE':
+        assert_response(HTTPStatus.NOT_FOUND, method, endpoint, path_param, query_params, payload)
     if func_check_valid_response is None:
         func_check_valid_response = __dummy_func
     assert func_check_valid_response(response.json()) == 'DONE'
