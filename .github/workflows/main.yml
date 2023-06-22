@@ -84,10 +84,8 @@ jobs:
               DATABASE_URL=${{ secrets.DATABASE_URL }}
               POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
               SECRET_KEY=${{ secrets.SECRET_KEY }}
-              # === two vars below are needed for docker-compose.yml
               PROJECT_NAME=${{ secrets.PROJECT_NAME }}
               DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
-              # === <add other vars here>
               APP_TITLE=${{ secrets.APP_TITLE }}
               APP_DESCRIPTION=${{ secrets.APP_DESCRIPTION }}
             _EOF_
