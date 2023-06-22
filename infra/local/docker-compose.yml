@@ -5,8 +5,8 @@ services:
     restart: always
     volumes:
       - cargo_postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_PASSWORD=postgres     
+    # environment:
+    #  - POSTGRES_PASSWORD=postgres     
     env_file:
       - ../../.env
 
@@ -15,8 +15,8 @@ services:
     restart: always
     depends_on: 
       - db 
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
+    # environment:
+    #  - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
     env_file:
       - ../../.env
   
