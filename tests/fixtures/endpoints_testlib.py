@@ -102,8 +102,9 @@ def assert_response(
     payload: dict[str:str] | None = None,
 ) -> Response:
     response = get_response(method, endpoint, path_param, query_params, payload)
-    assert response.status_code == status_code, \
-        f'{response.status_code} -> {method}({create_endpoint(endpoint, path_param)}, {query_params}, {payload})'
+    assert response.status_code == status_code, (
+        f'{response.status_code} != {status_code} -> '
+        f'{method}({create_endpoint(endpoint, path_param)}, {query_params}, {payload})')
     return response
 
 
