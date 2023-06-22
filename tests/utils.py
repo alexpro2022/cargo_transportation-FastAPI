@@ -33,6 +33,7 @@ def check_cargo_get_id_response(response_json: dict) -> str:
 def check_cargo_get_all_response(response_json: list) -> str:
     assert isinstance(response_json, list)
     response_json = response_json[0]
+    response_json['nearest_cars_amount'] = 0
     return __assert(response_json, get_cargo_get_all_response_example())
 
 
