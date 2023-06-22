@@ -4,12 +4,12 @@ from .fixtures.data import (get_cargo_get_all_response_example,
                             get_cargo_put_response_example)
 
 
-def empty_list(response_json):
+def empty_list(response_json) -> str:
     assert response_json == []
     return 'DONE'
 
 
-def __assert(response_json: dict, example: dict):
+def __assert(response_json: dict, example: dict) -> str:
     assert isinstance(response_json, dict)
     assert isinstance(example, dict)
     response_json.pop('id')
@@ -17,26 +17,26 @@ def __assert(response_json: dict, example: dict):
     return 'DONE'
 
 
-def check_cargo_post_response(response_json: dict):
+def check_cargo_post_response(response_json: dict) -> str:
     return __assert(response_json, get_cargo_post_response_example())
 
 
-def check_cargo_put_response(response_json: dict):
+def check_cargo_put_response(response_json: dict) -> str:
     return __assert(response_json, get_cargo_put_response_example())
 
 
-def check_cargo_get_id_response(response_json: dict):
+def check_cargo_get_id_response(response_json: dict) -> str:
     response_json['car_numbers'] = []
     return __assert(response_json, get_cargo_get_id_response_example())
 
 
-def check_cargo_get_all_response(response_json: list):
+def check_cargo_get_all_response(response_json: list) -> str:
     assert isinstance(response_json, list)
     response_json = response_json[0]
     return __assert(response_json, get_cargo_get_all_response_example())
 
 
-def check_location(location):
+def check_location(location: dict) -> str:
     assert isinstance(location, dict)
     assert isinstance(location['id'], int)
     assert isinstance(location['zip'], str)
@@ -46,7 +46,7 @@ def check_location(location):
     return 'DONE'
 
 
-def check_car(car):
+def check_car(car: dict) -> str:
     assert isinstance(car, dict)
     assert isinstance(car['id'], int)
     assert isinstance(car['weight'], int)
@@ -54,7 +54,7 @@ def check_car(car):
     return check_location(car['car_location'])
 
 
-def check_cars(cars):
+def check_cars(cars: list) -> str:
     assert isinstance(cars, list)
     assert len(cars) == 20
     assert cars == sorted(cars, key=lambda car: car['id'])

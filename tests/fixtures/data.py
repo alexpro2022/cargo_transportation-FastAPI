@@ -1,3 +1,5 @@
+from typing import Any
+
 GET = 'get'
 POST = 'post'
 PUT = 'put'
@@ -71,27 +73,27 @@ POST_PAYLOAD = _FIRST_POST_PAYLOAD
 PUT_PAYLOAD = _FIRST_PUT_PAYLOAD
 
 
-def get_cargo_post_response_example():
+def get_cargo_post_response_example() -> dict[str, Any]:
     cargo = CARGO_GENERIC.copy()
     cargo.pop('nearest_cars_amount')
     cargo.pop('car_numbers')
     return cargo
 
 
-def get_cargo_put_response_example():
+def get_cargo_put_response_example() -> dict[str, Any]:
     cargo = get_cargo_post_response_example()
     cargo['description'] = PUT_PAYLOAD['description']
     cargo['weight'] = PUT_PAYLOAD['weight']
     return cargo
 
 
-def get_cargo_get_id_response_example():
+def get_cargo_get_id_response_example() -> dict[str, Any]:
     cargo = get_cargo_put_response_example()
     cargo['car_numbers'] = []
     return cargo
 
 
-def get_cargo_get_all_response_example():
+def get_cargo_get_all_response_example() -> dict[str, Any]:
     cargo = CARGO_GENERIC.copy()
     cargo.pop('weight')
     cargo.pop('description')
