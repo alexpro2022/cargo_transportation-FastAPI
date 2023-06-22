@@ -4,31 +4,27 @@ services:
     image: postgres:15.0-alpine
     restart: always
     volumes:
-      - cargo_postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_PASSWORD=postgres     
+      - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ../../.env
+      - ./.env
 
   web:
-    build: ../..
+    image: "${DOCKERHUB_USERNAME}/${PROJECT_NAME}"
     restart: always
     depends_on: 
-      - db 
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
+      - db      
     env_file:
-      - ../../.env
-  
+      - ./.env
+
   nginx:
     image: nginx:1.21.3-alpine
     restart: always
     depends_on:
-      - web    
+      - web 
     ports:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
-  cargo_postgres_data:
+  postgres_data:
